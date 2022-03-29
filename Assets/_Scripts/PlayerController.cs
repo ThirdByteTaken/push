@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
-            controller.Move(transform.forward * playerSpeed * Time.deltaTime);
+            controller.Move(Vector3.forward * playerSpeed * Time.deltaTime);
         }
     }
 }
