@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour
 
     public float sensitivity = 100f;
 
-    float xRotation = 0f;
+    float xRotation = 45f;
 
     // Start is called before the first frame update
     void Start()
