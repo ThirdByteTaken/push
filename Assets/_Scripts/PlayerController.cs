@@ -18,8 +18,10 @@ public class PlayerController : MonoBehaviour
     int helpers;
     int motivation;
 
+    int nextLimit;
+
     [SerializeField]
-    Transform weight;
+    Transform weight, arms;
 
     [SerializeField]
     List<HelperController> Helpers;
@@ -29,7 +31,7 @@ public class PlayerController : MonoBehaviour
         playerSpeed = Start_Speed;
         helpers = Start_Helpers;
         motivation = Start_Motivation;
-        Invoke("LoseHelper", motivation);
+        nextLimit = motivation;
     }
 
     [SerializeField]
@@ -39,10 +41,16 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
+            if (Helpers.Count == 0) return;
             controller.Move(Vector3.forward * (playerSpeed / (Start_Helpers + 1 - helpers)) * Time.deltaTime);
+
             var weightPos = weight.position;
             weightPos.z = transform.position.z + 1f;
             weight.transform.position = weightPos;
+
+            var armPos = arms.position;
+            armPos.z = transform.position.z + 0.622f;
+            arms.transform.position = armPos;
 
             foreach (var helper in Helpers)
             {
@@ -50,6 +58,15 @@ public class PlayerController : MonoBehaviour
                 hPos.z = transform.position.z - 0.6f;
                 helper.transform.position = hPos;
                 helper.MoveForward();
+            }
+
+            if (Helpers[0].transform.position.z > nextLimit)
+            {
+                Helpers[0].GiveUp();
+                helpers--;
+                motivation -= Motivation_Decrease_Rate;
+                nextLimit += motivation;
+                Helpers.RemoveAt(0);
             }
         }
         else
@@ -59,13 +76,5 @@ public class PlayerController : MonoBehaviour
                 helper.StandStill();
             }
         }
-    }
-
-    void LoseHelper()
-    {
-        helpers--;
-        if (helpers == 0) return;
-        motivation -= Motivation_Decrease_Rate;
-        Invoke("LoseHelper", motivation);
     }
 }
