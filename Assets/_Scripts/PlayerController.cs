@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     int nextLimit;
 
     [SerializeField]
-    Transform weight, arms;
+    Transform weight, arms, snowblower;
 
     [SerializeField]
     List<HelperController> Helpers;
