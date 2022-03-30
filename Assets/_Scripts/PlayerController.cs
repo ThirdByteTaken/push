@@ -21,6 +21,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     Transform weight;
 
+    [SerializeField]
+    List<HelperController> Helpers;
+
     void Start()
     {
         playerSpeed = Start_Speed;
@@ -40,6 +43,21 @@ public class PlayerController : MonoBehaviour
             var weightPos = weight.position;
             weightPos.z = transform.position.z + 1f;
             weight.transform.position = weightPos;
+
+            foreach (var helper in Helpers)
+            {
+                var hPos = helper.transform.position;
+                hPos.z = transform.position.z - 0.6f;
+                helper.transform.position = hPos;
+                helper.MoveForward();
+            }
+        }
+        else
+        {
+            foreach (var helper in Helpers)
+            {
+                helper.StandStill();
+            }
         }
     }
 
